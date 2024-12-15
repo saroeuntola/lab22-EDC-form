@@ -1,0 +1,121 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Invoice Form</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Kh Battambang";
+            font-size: 10px;
+        }
+        .main-form{
+           height: 70vh;
+        }
+        img{
+            width: 50px;
+        }
+        h1{
+          
+            font-family: "khmer moul";
+        
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="text-center my-3">
+            <img src="/image/Edc_logo_khmer.png" alt="Logo" class="img-fluid mt-4">
+            <h3 class="p-2">អគ្គិសនីកម្ពុជា - EDC</h3>
+        </div>
+
+        <section class="gap-4 d-flex main-form">
+            <form class="shadow-lg w-50 overflow-y-scroll rounded-2 p-3" id="invoiceForm">
+                <div class="mb-3">
+                    <label class="form-label text-primary">បញ្ចូលលេខសម្គាល់</label>
+                    <input type="text" id="id" class="form-control" placeholder="ID">
+                </div> 
+                <div class="mb-3">
+                    <label class="form-label text-primary">បញ្ចូលឈ្មោះ</label>
+                    <input type="text" id="name" class="form-control" placeholder="Name">
+                </div>     
+                <div class="mb-3">
+                    <label class="form-label text-primary">បញ្ចូលលេខគីឡូចាស់</label>
+                    <input type="number" id="oldReading" class="form-control" placeholder="Old Meter Reading">
+                </div>   
+                <div class="mb-3">
+                    <label class="form-label text-primary">បញ្ចូលលេខគីឡូថ្មី</label>
+                    <input type="number" id="newReading" class="form-control" placeholder="New Meter Reading">
+                </div> 
+                  <div class="">
+                        <p>ជ្រើរើសតម្លៃសម្រាម</p>
+                    </div> 
+                <div class="btn-group mb-3" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary"  value="10000" for="btnradio1">10,000៛</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary"  value="20000" for="btnradio2">២0,000៛</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <label class="btn btn-outline-primary" value="30000" for="btnradio3">៣0,000៛</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+                <label class="btn btn-outline-primary" value="0" for="btnradio4">គ្មាន</label>
+                </div>
+                <div>
+                    <button type="button" id="generateInvoice" class=" btn btn-primary">
+                         បញ្ជូន
+                    </button>  
+                </div>
+              
+            </form>
+
+            <div class="shadow-lg p-3 w-50 rounded-2" id="invoiceOutput">
+                <p class="text-center text-primary">វិក្កយបត្រថ្លៃភ្លើង</p>
+                <div id="invoiceDetails">
+    
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('generateInvoice').addEventListener('click', function() {
+            const id = document.getElementById('id').value;
+            const name = document.getElementById('name').value;
+            const oldReading = parseFloat(document.getElementById('oldReading').value);
+            const newReading = parseFloat(document.getElementById('newReading').value);
+            const ratePerUnit = 780;
+
+ const selectedPriceElement = document.querySelector('input[name="btnradio"]:checked + label');
+    const selectedPrice = selectedPriceElement ? parseFloat(selectedPriceElement.getAttribute('value')) || 0 : 0;
+            if (!id || !name || isNaN(oldReading) || isNaN(newReading) || newReading < oldReading) {
+                alert('data is null please input data.');
+                return;
+            }
+
+       
+            const totalUnits = newReading - oldReading;
+            const totalCost = totalUnits * ratePerUnit + selectedPrice;
+
+            const invoiceDetails = `
+               <p><strong>លេខសម្គាល់:</strong> ${id}</p>
+                <p><strong>ឈ្មោះ:</strong> ${name}</p>
+                <p><strong>លេខគីឡូចាស់:</strong> ${oldReading} kwh</p>
+                <p><strong>លេខគីឡូថ្មី:</strong> ${newReading}kwh</p>
+                <p><strong>សរុបគីឡូ:</strong> ${totalUnits} kWh</p>
+                 <p><strong>តម្លៃក្នុង 1kwh:</strong> 780៛</p>
+                <p><strong>តម្លៃសម្រាម:</strong> ${selectedPrice.toFixed(0)}៛</p>
+                <p><strong>សរុបតម្លៃ:</strong> ${totalCost.toFixed(0)}៛</p>
+    
+            `;
+            document.getElementById('invoiceDetails').innerHTML = invoiceDetails;
+        });
+    </script>
+</body>
+</html>

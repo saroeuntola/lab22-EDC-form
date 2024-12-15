@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <title>Invoice Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <main class="container py-4 d-flex justify-content-center">
+          <button id="generateInvoice" class="btn btn-primary mt-3">ចុចដើម្បីបញ្ចូលទិន្នន័យ</button>
+    </main>
+  
+    <script>
+        // Generate invoice
+        document.getElementById('generateInvoice').addEventListener('click', () => {
+            const id = prompt('បញ្ចូលលេខសម្គាល់:');
+            const name = prompt('បញ្ចូលឈ្មោះ:');
+            const oldReading = parseFloat(prompt('បញ្ចូលលេខគីឡូចាស់:'));
+            const newReading = parseFloat(prompt('បញ្ចូលលេខគីឡូថ្មី:'));
+             const trash = parseFloat(prompt('បញ្ចូលតម្លៃសម្រាម:'));
+            const ratePerUnit = 780; 
+
+            if (!id || !name || isNaN(oldReading) || isNaN(newReading) || newReading < oldReading) {
+                alert('error please input all field.');
+                return;
+            }
+            const totalUnits = newReading - oldReading;
+            const totalCost = totalUnits * ratePerUnit + trash;
+
+            alert(`Invoice Details:\n\n` +
+                `លេខសម្គាល់: ${id}\n` +
+                `ឈ្មោះ: ${name}\n` +
+                `លេខគីឡូចាស់: ${oldReading} kwh\n` +
+                `លេខគីឡូថ្មី: ${newReading} kwh\n` +
+                `សរុបគីឡូ: ${totalUnits} kWh\n` +
+                `តម្លៃក្នុង 1kwh: 780៛\n` +
+                `សម្លៃសម្រាម: ${trash} ៛\n` +
+                `សរុបតម្លៃ: ${totalCost.toLocaleString('en-US')} ៛`)
+        });
+    </script>
+</body>
+</html>
